@@ -1,0 +1,156 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #1a1a2e;
+}
+
+.login-container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+}
+
+.left-section {
+    flex: 1;
+    display: flex;
+    background: url("{% static 'images/login-background.jpg' %}") no-repeat center center/cover;
+    flex-direction: column;
+    text-align: center;
+    padding: 3rem;
+    color: #ffffff;
+}
+
+.right-section {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+p {
+    font-size: 1rem;
+    color: #cfcfcf;
+}
+
+.form-label {
+    color: #cfcfcf;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+}
+
+.input-group .form-control {
+    border-radius: 0;
+    border: 1px solid #444;
+    background-color: #ffffff;
+    color: #0a0a0a;
+}
+
+.input-group .btn {
+    border-radius: 0;
+    background: #444;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.input-group .btn:hover {
+    background: #666;
+}
+
+.btn-primary {
+    background-color: #6c63ff;
+    border: none;
+    transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #4c47cc;
+}
+
+.btn-outline-light {
+    color: #ffffff;
+    border: 1px solid #ffffff;
+    background: none;
+    transition: background 0.3s, color 0.3s;
+}
+
+.btn-outline-light:hover {
+    background: #ffffff;
+    color: #222;
+}
+
+a {
+    color: #6c63ff;
+}
+
+a:hover {
+    color: #ffffff;
+}
+
+.image-section {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 10px;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.image-section img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    object-fit: cover;
+}
+
+.image-section img:hover {
+    transform: scale(1.1);
+    /* Mayor ampliación para un efecto más notorio */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+    /* Sombra más profunda */
+}
+
+/* Ajustes responsivos */
+@media (max-width: 768px) {
+    .image-section {
+        border-radius: 5px;
+        /* Menor redondeo para pantallas pequeñas */
+    }
+
+    .image-section img {
+        transform: none;
+        /* Sin escalado en móviles para evitar desbordamientos */
+        box-shadow: none;
+        /* Sin sombra en móviles para simplificar diseño */
+    }
+}
+
+.alert {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}

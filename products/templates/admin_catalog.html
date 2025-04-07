@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cátalogo Administrativo</title>
+</head>
+
+<body>
+    {% extends 'base.html' %}
+
+    {% block content %}
+    <h2 class="text-center">Catálogo Administrativo</h2>
+    <div class="table-responsive">
+        <form method="GET" action="{% url 'admin_catalog' %}" class="mb-4 d-flex">
+            <input type="text" name="size" class="form-control me-2" placeholder="Buscar por la talla del producto"
+                value="{{ size_query }}">
+            <!-- Filtro por precio mínimo -->
+            <input type="number" name="price_min" value="{{ price_min_query }}" placeholder="Precio mínimo"
+                class="form-control">
+
+            <!-- Filtro por precio máximo -->
+            <input type="number" name="price_max" value="{{ price_max_query }}" placeholder="Precio máximo"
+                class="form-control">
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        </form>
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>N° del Producto</th>
+                    <th>Descripción</th>
+                    <th>Stock</th>
+                    <th>Precio</th>
+                    <th class="col-talla">Talla</th>
+                    <th>Género</th>
+                    <th>Activo en Catálogo</th>
+                    <th>Id del Modelo</th>
+                    <th class="col-acciones">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in page_obj %}
+
+                <tr>
+                    <td>{{ product.id }}</td>
+                    <td>{{ product.description }}</td>
+                    <td>{{ product.stock }}</td>
+                    <td>${{ product.price }}</td>
+                    <td>{{ product.size }}</td>
+                    <td>
+                        {% if product.gender == 'male' %}
+                        Masculino
+                        {% elif product.gender == 'female' %}
+                        Femenino
+                        {% elif product.gender == 'unisex' %}
+                        Unisex
+                        {% else %}
+                        Otro
+                        {% endif %}
+                    </td>
+                    <td>{{ product.is_active|yesno:"Sí,No" }}</td>
+                    <td>
+                        {% with product.models.all as product_models %}
+                        {% if product_models %}
+                        {% for product_model in product_models %}
+                        {{ product_model.model.id }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                        {% else %}
+                        Sin Modelo
+                        {% endif %}
+                        {% endwith %}
+                    </td>
+                    <td>
+                        <a href="{% url 'update_product' product.id %}" class="btn btn-primary btn-sm"><i
+                                class="fas fa-edit"></i></a>
+                        <form method="POST" action="{% url 'toggle_product_status' product.id %}"
+                            style="display:inline;">
+                            {% csrf_token %}
+                            {% if product.is_active %}
+                            <button type="submit" class="btn btn-warning btn-sm"><i
+                                    class="fas fa-toggle-off"></i></button>
+                            {% else %}
+                            <button type="submit" class="btn btn-success btn-sm"><i
+                                    class="fas fa-toggle-on"></i></button>
+                            {% endif %}
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <!-- Paginador -->
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1" aria-label="First">
+                    <span aria-hidden="true">&laquo;&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+            <li class="page-item active"><a class="page-link">{{ num }}</a></li>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %} <li class="page-item"><a
+                    class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last">
+                        <span aria-hidden="true">&raquo;&raquo;</span>
+                    </a>
+                </li>
+                {% endif %}
+        </ul>
+    </nav>
+
+    <head>
+        <link rel="stylesheet" href="/static/css/admin_catalog.css">
+    </head>
+    {% endblock %}
+
+</body>
+
+</html>

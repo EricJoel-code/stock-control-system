@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Producto</title>
+</head>
+
+<body>
+    {% extends 'base.html' %}
+    {% block content %}
+    <h2>Agregar Producto</h2>
+    <div class="container">
+        <form method="post" enctype="multipart/form-data" class="product-form">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col">
+                    <label for="id_description">Descripción</label>
+                    {{ product_form.description }}
+                </div>
+                <div class="col">
+                    <label for="id_image">Imagen</label>
+                    {{ product_form.image }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label for="id_stock">Stock</label>
+                    {{ product_form.stock }}
+                </div>
+                <div class="col">
+                    <label for="id_price">Precio</label>
+                    {{ product_form.price }}
+                    {% if product_form.price.errors %}
+                    <div style="color: red;">
+                        {% for error in product_form.price.errors %}
+                        {{ error }}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label for="id_gender">Género</label>
+                    {{ product_form.gender }}
+                </div>
+                <div class="col">
+                    <label for="id_size">Talla</label>
+                    {{ product_form.size }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label>Modelos</label>
+                    {{ product_form.models }}
+                </div>
+            </div>
+            <button type="submit" class="button-33" role="button">Guardar Producto</button>
+            <hr>
+        </form>
+    </div>
+
+
+    <head>
+        <link rel="stylesheet" href="/static/css/add_product.css">
+    </head>
+    {% endblock %}
+</body>
+
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualizar Producto</title>
+</head>
+
+<body>
+    {% extends 'base.html' %}
+
+    {% block content %}
+    <h2>Editar Producto</h2>
+
+    <form method="post" enctype="multipart/form-data" class="product-form">
+        {% csrf_token %}
+
+        <!-- Primera fila -->
+        <div class="row">
+            <div class="col">
+                <label for="{{ form.description.id_for_label }}">Descripción</label>
+                {{ form.description }}
+            </div>
+            <div class="col">
+                <label for="{{ form.image.id_for_label }}">Imagen</label>
+                {{ form.image }}
+            </div>
+        </div>
+
+        <!-- Segunda fila -->
+        <div class="row">
+            <div class="col">
+                <label for="{{ form.stock.id_for_label }}">Cantidad en Inventario</label>
+                {{ form.stock }}
+            </div>
+            <div class="col">
+                <label for="{{ form.price.id_for_label }}">Precio</label>
+                {{ form.price }}
+
+                {% if form.price.errors %}
+                <div class="text-danger">
+                    {% for error in form.price.errors %}
+                    <small>{{ error }}</small>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Tercera fila -->
+        <div class="row">
+            <div class="col">
+                <label for="{{ form.gender.id_for_label }}">Género</label>
+                {{ form.gender }}
+            </div>
+            <div class="col">
+                <label for="{{ form.size.id_for_label }}">Talla</label>
+                {{ form.size }}
+            </div>
+        </div>
+
+        <!-- Cuarta fila -->
+        <div class="row">
+            <div class="col">
+                <label for="{{ form.models.id_for_label }}">Modelos</label>
+                {{ form.models }} <!-- Esto muestra los checkboxes preseleccionados -->
+            </div>
+        </div>
+
+        <button type="submit" class="button-33" role="button">Actualizar Producto</button>
+        <hr>
+    </form>
+
+    <head>
+        <link rel="stylesheet" href="/static/css/update_product.css">
+    </head>
+    {% endblock %}
+</body>
+
+</html>

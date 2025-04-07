@@ -1,0 +1,26 @@
+# Entorno virtual
+venv/
+
+# Archivos de usuario (media subidos)
+media/
+
+# Archivos de Python compilados
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Archivos de entorno (por si llegás a usar .env para claves)
+*.env
+*.env.*
+
+# Configuración de IDEs/editor
+.vscode/
+.idea/
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

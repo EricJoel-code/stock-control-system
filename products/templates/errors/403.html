@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso Denegado</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Guardar la URL de logout como variable de JavaScript
+            var logoutUrl = "{{ logout_url }}";
+
+            // Evitar que el usuario vuelva atrás
+            window.history.pushState(null, "", window.location.href);
+            window.onpopstate = function () {
+                window.location.href = logoutUrl;  // Redirigir al logout
+            };
+        });
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+
+        h1 {
+            color: red;
+        }
+
+        p {
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Acceso Denegado</h1>
+    <p>No tienes permiso para acceder a esta página.</p>
+    <a href="{% url 'logout' %}">Da click. Tienes que volver a iniciar sesión </a>
+</body>
+
+</html>

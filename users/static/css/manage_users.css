@@ -1,0 +1,61 @@
+/* CSS button - Smaller version */
+.button-73 {
+    appearance: none;
+    background-color: #c0bcbc;
+    border-radius: 20em;
+    /* Reduce the roundness */
+    border-style: none;
+    box-shadow: hsl(240, 0%, 61%) 0 -6px 4px inset;
+    /* Smaller shadow */
+    box-sizing: border-box;
+    color: #000000;
+    cursor: pointer;
+    display: inline-block;
+    font-family: -apple-system, sans-serif;
+    font-size: 0.9rem;
+    /* Reduce font size */
+    font-weight: 700;
+    letter-spacing: -.24px;
+    margin: 0;
+    outline: none;
+    padding: 0.5rem 1rem;
+    /* Reduce padding */
+    quotes: auto;
+    text-align: center;
+    text-decoration: none;
+    transition: all .15s;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+.button-73:hover {
+    background-color: #82ec51;
+    box-shadow: #2bad36f8 0 -4px 6px inset;
+    /* Adjust hover shadow */
+    transform: scale(1.1);
+    /* Slightly smaller scale */
+}
+
+.button-73:active {
+    transform: scale(1.05);
+    /* Less intense active scale */
+}
+
+@media (min-width: 768px) {
+    .button-73 {
+        font-size: 1rem;
+        /* Adjust font size for larger screens */
+        padding: 0.5rem 1.5rem;
+        /* Adjust padding for larger screens */
+    }
+}
+
+h2 {
+    text-align: center;
+    color: rgb(61, 61, 156);
+}
+
+h2:hover {
+    color: rgb(27, 84, 206);
+}

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo</title>
+</head>
+
+<body>
+    {% extends 'base.html' %}
+
+    {% block content %}
+
+
+
+    <div class="catalog-container">
+        <h2 class="text-center">Productos</h2>
+
+        <form method="get" action="" class="filter-form">
+            <div class="filter-container">
+                <input type="text" name="description" value="{{ description_query }}"
+                    placeholder="Buscar por descripción" class="filter-input">
+                <input type="text" name="color" value="{{ color_query }}" placeholder="Buscar por color"
+                    class="filter-input">
+                <input type="number" name="price_min" value="{{ price_min }}" placeholder="Precio mínimo"
+                    class="filter-input">
+                <input type="number" name="price_max" value="{{ price_max }}" placeholder="Precio máximo"
+                    class="filter-input">
+                <input type="text" name="model" value="{{ model_query }}" placeholder="Buscar por modelo"
+                    class="filter-input">
+                <input type="text" name="size" value="{{ size_query }}" placeholder="Buscar por talla"
+                    class="filter-input">
+
+
+                <button type="submit" class="filter-button">Filtrar</button>
+            </div>
+        </form>
+
+        <div class="product-grid">
+            {% for product in page_obj %}
+            <div class="product-card">
+                <h3 class="product-title">{{ product.description }}</h3>
+                {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.description }}" class="product-image">
+                {% else %}
+                <div class="placeholder-image">Sin imagen</div>
+                {% endif %}
+
+                <div class="product-details">
+                    <p class="product-price">$ {{ product.price }}</p>
+                    <p class="product-stock">Disponibilidad: {{ product.stock }} disponibles</p>
+                    <p class="product-gender">Género:
+                        {% if product.gender == 'male' %}
+                        Masculino
+                        {% elif product.gender == 'female' %}
+                        Femenino
+                        {% elif product.gender == 'unisex' %}
+                        Unisex
+                        {% else %}
+                        Otro
+                        {% endif %}
+                    </p>
+                    <p class="product-size">Talla: {{ product.size }}</p>
+                    <p class="product-colors">Modelo:
+                        {% with product.models.all as product_models %}
+                        {% if product_models %}
+                        {% for product_model in product_models %}
+                        {{ product_model.model.description }}
+                        {% endfor %}
+                        {% else %}
+                        Sin modelo
+                        {% endif %}
+                        {% endwith %}
+                    </p>
+                    <p class="product-colors">Color:
+                        {% with product.models.all as product_models %}
+                        {% if product_models %}
+                        {% for product_model in product_models %}
+                        {{ product_model.model.color }}
+                        {% endfor %}
+                        {% else %}
+                        Sin color
+                        {% endif %}
+                        {% endwith %}
+                    </p>
+
+                    <!-- Botón que abre el modal para hacer el pedido -->
+                    <button class="button-71" role="button" data-bs-toggle="modal"
+                        data-bs-target="#orderModal{{ product.id }}">
+                        Realizar Pedido
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modal para hacer el pedido -->
+            <div class="modal fade" id="orderModal{{ product.id }}" tabindex="-1"
+                aria-labelledby="orderModalLabel{{ product.id }}" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="orderModalLabel{{ product.id }}">Realizar Pedido</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="post" action="{% url 'create_order' product.id %}">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <p><strong>Producto:</strong> {{ product.description }}</p>
+                                </div>
+                                <div class="mb-3">
+                                    <p><strong>Precio:</strong> ${{ product.price }}</p>
+                                </div>
+                                <div class="mb-3">
+                                    <p><strong>Stock disponible:</strong> {{ product.stock }}</p>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="quantity" class="form-label">Cantidad:</label>
+                                    <input type="number" id="quantity" name="quantity" class="form-control" min="1"
+                                        max="{{ product.stock }}" required>
+                                </div>
+                                <button type="submit" class="btn btn-success w-100">Hacer Pedido</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Paginador -->
+        <nav class="pagination-container">
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1">&laquo; Primero</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">&lsaquo; Anterior</a>
+                </li>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %} <li class="page-item"><a
+                        class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                    {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">Siguiente &rsaquo;</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Último &raquo;</a>
+                    </li>
+                    {% endif %}
+            </ul>
+        </nav>
+    </div>
+
+    <head>
+        <link rel="stylesheet" href="/static/css/client_catalog.css">
+    </head>
+    {% endblock %}
+</body>
+
+</html>
