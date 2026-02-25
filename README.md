@@ -120,6 +120,7 @@ El repositorio no incluye datos reales ni credenciales productivas.
 ## 👨‍💻 Autor
 
 **Eric Joel Cacuango de la Torre**
+
 Desarrollador de Software Junior 
 ---
 
